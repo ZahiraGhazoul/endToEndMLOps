@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/453f87b1c21043f8b2f6c7f7fc9e40f2/artifacts
+end_time: 1750788253631
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 453f87b1c21043f8b2f6c7f7fc9e40f2
+run_name: adaptable-elk-490
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750788218251
+status: 4
+tags: []
+user_id: NANOTEK

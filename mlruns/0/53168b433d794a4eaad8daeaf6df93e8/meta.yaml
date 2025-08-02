@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/53168b433d794a4eaad8daeaf6df93e8/artifacts
+end_time: 1750789671214
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 53168b433d794a4eaad8daeaf6df93e8
+run_name: zealous-snake-275
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750789648537
+status: 4
+tags: []
+user_id: NANOTEK

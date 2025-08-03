@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+.Python
+env/
+venv/
+ENV/
+
+# Virtual environment folder
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data files - usually large or sensitive, better to keep out of repo if possible
+data/
+*.csv
+*.tsv
+*.xlsx
+
+# Docker-related files (if you want to ignore build cache)
+docker/cache/
+
+# DVC cache and temp files
+.dvc/
+.cache/
+
+# MLflow runs (log files, models, artifacts)
+mlruns/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and reports
+*.log
+*.out
+*.err

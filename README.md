@@ -1,4 +1,4 @@
-# 🧠 End-to-End MLOps Pipeline: Customer Churn Prediction
+# End-to-End MLOps Pipeline: Customer Churn Prediction
 
 This project demonstrates a complete MLOps workflow to train, track, and serve a machine learning model that predicts customer churn using the Telco Customer Churn dataset.
 

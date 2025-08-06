@@ -1,4 +1,4 @@
-# 🧠 MLOps Project: End-to-End Pipeline for Predicting Customer Churn
+#  MLOps Project: End-to-End Pipeline for Predicting Customer Churn
 
 This project demonstrates an end-to-end MLOps pipeline using the **Telco Customer Churn Dataset**. It includes data preprocessing, model training and evaluation, model serving via REST API (FastAPI), containerization (Docker), and CI/CD automation.
 

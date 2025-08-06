@@ -21,14 +21,29 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Build Docker Image
-      run: |
-        docker build -t churn-api .
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-    - name: Login to DockerHub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: yourdockerhubusername/churn-api:latest
+        cache-from: type=registry,ref=yourdockerhubusername/churn-api:cache
+        cache-to: type=inline
 
-    - name: Push Docker Image
+    - name: Set up Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Set AKS Context
       run: |
-        docker tag churn-api yourusername/churn-api:latest
-        docker push yourusername/churn-api:latest
+        az aks get-credentials --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
+
+    - name: Deploy to AKS
+      run: |
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml

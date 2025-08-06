@@ -3,3 +3,5 @@ uvicorn
 pandas
 mlflow
 scikit-learn
+kfp
+joblib

@@ -2,40 +2,68 @@
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+import os
 
-# Load data
-df = pd.read_csv("data/WA_Fn-UseC_-Telco-Customer-Churn.csv")
+DATA_PATH = "data/WA_Fn-UseC_-Telco-Customer-Churn.csv"
+OUTPUT_DIR = "data"
+TEST_SIZE = 0.2
+RANDOM_STATE = 42
 
-# Drop customerID (not useful for prediction)
-df.drop("customerID", axis=1, inplace=True)
+def load_data(path):
+    return pd.read_csv(path)
 
-# Convert TotalCharges to numeric (it may have blanks)
-df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors='coerce')
+def clean_data(df):
+    df = df.drop("customerID", axis=1)
+    df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors='coerce')
+    return df.dropna()
 
-# Handle missing values
-df.dropna(inplace=True)
+def encode_categoricals(df):
+    label_encoders = {}
+    for col in df.select_dtypes(include='object'):
+        le = LabelEncoder()
+        df[col] = le.fit_transform(df[col])
+        label_encoders[col] = le
+    return df, label_encoders
 
-# Encode categorical columns
-categorical_cols = df.select_dtypes(include=['object']).columns
+def scale_features(X):
+    scaler = StandardScaler()
+    X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
+    return X_scaled, scaler
 
-label_encoders = {}
-for col in categorical_cols:
-    le = LabelEncoder()
-    df[col] = le.fit_transform(df[col])
-    label_encoders[col] = le
+def split_data(df, test_size=TEST_SIZE, random_state=RANDOM_STATE):
+    X = df.drop("Churn", axis=1)
+    y = df["Churn"]
+    return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
 
-# Define features and target
-X = df.drop("Churn", axis=1)
-y = df["Churn"]
+def save_data(X_train, X_test, y_train, y_test, output_dir=OUTPUT_DIR):
+    os.makedirs(output_dir, exist_ok=True)
+    X_train.to_csv(f"{output_dir}/X_train.csv", index=False)
+    X_test.to_csv(f"{output_dir}/X_test.csv", index=False)
+    y_train.to_csv(f"{output_dir}/y_train.csv", index=False)
+    y_test.to_csv(f"{output_dir}/y_test.csv", index=False)
 
-# Train/test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+def main():
+    print("🚀 Loading data...")
+    df = load_data(DATA_PATH)
 
-# Save to files (optional)
-X_train.to_csv("data/X_train.csv", index=False)
-X_test.to_csv("data/X_test.csv", index=False)
-y_train.to_csv("data/y_train.csv", index=False)
-y_test.to_csv("data/y_test.csv", index=False)
+    print("🧹 Cleaning data...")
+    df = clean_data(df)
 
-print("✅ Data preparation complete!")
+    print("🔁 Encoding categorical features...")
+    df, _ = encode_categoricals(df)
+
+    print("✂️ Splitting into train/test sets...")
+    X_train, X_test, y_train, y_test = split_data(df)
+
+    print("📏 Scaling features...")
+    X_train, scaler = scale_features(X_train)
+    X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
+
+    print("💾 Saving prepared data...")
+    save_data(X_train, X_test, y_train, y_test)
+
+    print("✅ Data preparation complete!")
+
+if __name__ == "__main__":
+    main()

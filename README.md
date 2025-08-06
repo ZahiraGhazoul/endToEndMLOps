@@ -133,5 +133,5 @@ Docker
 GitHub Actions (CI/CD)
 
 👤 Author
-Asma Ghazoul – Cloud & DevOps Engineer with a passion for MLOps
-🔗 LinkedIn
+Zahira Ghazoul – Cloud & DevOps Engineer with a passion for MLOps
+
